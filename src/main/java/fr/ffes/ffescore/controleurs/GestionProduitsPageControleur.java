@@ -14,15 +14,34 @@ import javax.annotation.Resource;
 @RequestMapping("/gestionProduits")
 public class GestionProduitsPageControleur {
 
-        @Resource
-        private ProduitService produitService;
+    @Resource
+    private ProduitService produitService;
 
-        @RequestMapping("/ajouterProduit")
-        public String gestionProduitsPage(Model model, @RequestParam(name="numeroPage")Integer numeroPage){
-            Produit produit = new Produit();
-            produitService.ajouterProduit(produit);
-            model.addAttribute("produit", produit);
-            return "gestionProduitsPage";
-        }
+    @RequestMapping("/ajouterProduit")
+    public String ajouterProduit(Model model, @RequestParam(name="titre")String titre){
+        Produit produit = new Produit();
+        produitService.ajouterProduit(produit);
+        return "gestionProduitsPage";
+    }
+
+    @RequestMapping("/modifierProduit")
+    public String modifierProduit(Model model, @RequestParam(name="uid")Integer uid, @RequestParam(name="titre")String titre){
+        Produit produit = produitService.rechercherProduitParUid(uid);
+        produitService.modifierProduit(produit);
+        return "gestionProduitsPage";
+    }
+
+    @RequestMapping("/supprimerProduit")
+    public String supprimerProduit(Model model, @RequestParam(name="uid")Integer uid){
+        produitService.supprimerProduit(uid);
+        return "gestionProduitsPage";
+    }
+
+    @RequestMapping("/rechercherProduit")
+    public String rechercherProduit(Model model, @RequestParam(name="uid")Integer uid){
+        Produit produit = produitService.rechercherProduitParUid(uid);
+        model.addAttribute("produit", produit);
+        return "gestionProduitsPage";
+    }
 
 }
